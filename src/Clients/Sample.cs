@@ -5,10 +5,11 @@
 
 using RestSharp;
 using System;
+using System.Net;
 
 namespace MTConnect.Clients
 {
-    public class Sample
+    public class Sample : MTConnectClientRequest
     {
         /// <summary>
         /// Create a new Sample Request Client
@@ -195,6 +196,7 @@ namespace MTConnect.Clients
             var client = new RestClient(CreateUri());
             client.Timeout = Timeout;
             client.ReadWriteTimeout = Timeout;
+            client.Proxy = Proxy;
             IRestResponse response = client.Execute(CreateRequest());
             return ProcessResponse(response);
         }
@@ -206,6 +208,7 @@ namespace MTConnect.Clients
         {
             // Create HTTP Client and Request Data
             var client = new RestClient(CreateUri());
+            client.Proxy = Proxy;
             client.ExecuteAsync(CreateRequest(), AsyncCallback);
         }
 

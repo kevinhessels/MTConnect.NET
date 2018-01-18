@@ -18,6 +18,8 @@ namespace MTConnect.Clients
 
         public string Url { get; set; }
 
+        public IWebProxy Proxy { get; set; }
+
         public string BodyNode { get; set; }
 
         public int ConnectionTimeout { get; set; }
@@ -74,6 +76,7 @@ namespace MTConnect.Clients
                 if (!stop.WaitOne(0, true))
                 {
                     var request = (HttpWebRequest)WebRequest.Create(Url);
+                    request.Proxy = Proxy;
                     request.Timeout = ConnectionTimeout;
                     request.ReadWriteTimeout = IOTimeout;
                     using (response = (HttpWebResponse)request.GetResponse())

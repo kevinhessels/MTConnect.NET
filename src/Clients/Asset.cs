@@ -5,10 +5,11 @@
 
 using RestSharp;
 using System;
+using System.Net;
 
 namespace MTConnect.Clients
 {
-    public class Asset
+    public class Asset : MTConnectClientRequest
     {
         /// <summary>
         /// Create a new Asset Request Client
@@ -103,6 +104,7 @@ namespace MTConnect.Clients
             // Create HTTP Client and Request Data
             var client = new RestClient(CreateUri());
             var request = new RestRequest(Method.GET);
+            client.Proxy = Proxy;
             IRestResponse response = client.Execute(request);
             return ProcessResponse(response);
         }
@@ -114,6 +116,7 @@ namespace MTConnect.Clients
         {
             // Create HTTP Client and Request Data
             var client = new RestClient(CreateUri());
+            client.Proxy = Proxy;
             var request = new RestRequest(Method.GET);
             client.ExecuteAsync(request, AsyncCallback);
         }

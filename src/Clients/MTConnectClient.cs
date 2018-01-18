@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 
 namespace MTConnect.Clients
@@ -31,11 +32,15 @@ namespace MTConnect.Clients
 
         private void Init()
         {
+            
+
             Interval = 500;
             Timeout = 5000;
             MaximumSampleCount = 200;
             RetryInterval = 10000;
         }
+
+        public IWebProxy Proxy { get; set; }
 
         public string BaseUrl { get; set; }
 
@@ -99,6 +104,7 @@ namespace MTConnect.Clients
             do
             {
                 var probe = new Probe(BaseUrl, DeviceName);
+                probe.Proxy = Proxy;
                 probe.Timeout = Timeout;
                 probe.Error += MTConnectErrorRecieved;
                 probe.ConnectionError += ProcessConnectionError;
@@ -111,6 +117,7 @@ namespace MTConnect.Clients
                     do
                     {
                         var current = new Current(BaseUrl, DeviceName);
+                        current.Proxy = Proxy;
                         current.Timeout = Timeout;
                         current.Error += MTConnectErrorRecieved;
                         current.ConnectionError += ProcessConnectionError;
@@ -175,6 +182,7 @@ namespace MTConnect.Clients
                             // Create and Start the Sample Stream
                             if (sampleStream != null) sampleStream.Stop();
                             sampleStream = new Stream(url, "MTConnectStreams");
+                            sampleStream.Proxy = Proxy;
                             sampleStream.ConnectionTimeout = Timeout;
                             sampleStream.XmlReceived += ProcessSampleResponse;
                             sampleStream.XmlError += SampleStream_XmlError;
@@ -246,6 +254,7 @@ namespace MTConnect.Clients
                         if (assetId != "UNAVAILABLE" && assetId != LastChangedAssetId)
                         {
                             var asset = new Asset(BaseUrl, assetId);
+                            asset.Proxy = Proxy;
                             asset.Successful += ProcessAssetResponse;
                             asset.Error += MTConnectErrorRecieved;
                             asset.ExecuteAsync();
