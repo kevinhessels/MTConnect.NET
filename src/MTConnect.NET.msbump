@@ -1,0 +1,13 @@
+﻿{
+  "Configurations": {
+    "Debug": {
+      "BumpRevision": true,
+      "LabelDigits":  5
+    },
+
+    "Release": {
+      "BumpRevision": true,
+      "LabelDigits": 5
+    }
+  }
+}
